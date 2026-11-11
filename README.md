@@ -17,6 +17,6 @@
 
 ## What is missing so far?
 - Finish weekly methods code
-- Develop comparison framework and metrics (using the 2.5-97.5 interval as in nowcaster, then samples?)
+- Develop comparison framework and metrics (using the 95% interval as in nowcaster, then samples?)
 - Finish daily methods comparison
 - Apply comparison framework and metrics
