@@ -5,4 +5,4 @@
 ### Weekly
 - Nowcaster using INLA and using mgcv
 - baselinenowcast package
-- (processing now) surveillance package
+- (processing now) surveillance package: bayes.trunc & bayes.trunc.ddcp
