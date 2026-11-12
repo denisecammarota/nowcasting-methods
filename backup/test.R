@@ -8,7 +8,7 @@ source('source.R')
 
 # Importing the file that will be used ###########
 
-path_file <- 'dengue_all_sp.parquet'
+path_file <- 'dengue-sp-july.parquet'
 data <- read_parquet(path_file) %>%
   mutate(SG_UF = as.numeric(SG_UF)) %>%
   filter(SG_UF == 35) %>%
@@ -20,11 +20,27 @@ data <- read_parquet(path_file) %>%
   filter(epiyear(DT_SIN_PRI) >= 2025) %>%
   filter(epiyear(DT_SIN_PRI) <= 2026) 
 
+path_file <- 'dengue-sp-nov.parquet'
+data_gt <- read_parquet(path_file) %>%
+  mutate(SG_UF = as.numeric(SG_UF)) %>%
+  filter(SG_UF == 35) %>%
+  select('DT_SIN_PRI', 'DT_DIGITA') %>%
+  mutate(
+    DT_SIN_PRI = as.Date(DT_SIN_PRI),
+    DT_DIGITA = as.Date(DT_DIGITA)
+  ) %>%
+  filter(epiyear(DT_SIN_PRI) >= 2025) %>%
+  filter(epiyear(DT_SIN_PRI) <= 2026) 
+
 # No nowcasting baseline #########################
 # For both weekly and daily time granularity
 
 data_weekly <- do_weekly_data(data)
 data_daily <- do_daily_data(data)
+data_weekly_gt <- do_weekly_data(data_gt)
+data_daily_gt <- do_daily_data(data_gt)
+#data_weekly_gt <- data_weekly_gt %>% filter(dt_event <= max(data_weekly$dt_event))
+#data_daily_gt <- data_daily_gt %>% filter(dt_event <= max(data_daily$dt_event))
 
 # Nowcasting by base nowcaster ###################
 # Only for weekly time granularity
@@ -75,6 +91,8 @@ ggplot(nowcasts, aes(x = dt_event)) +
   geom_line(aes(y = median, colour = method)) +
   geom_line(data = data_weekly, aes(y = Cases), colour = "black") +
   geom_point(data = data_weekly, aes(y = Cases), colour = "black", size = 0.8) +
+  geom_line(data = data_weekly_gt, aes(y = Cases), colour = "red") +
+  geom_point(data = data_weekly_gt, aes(y = Cases), colour = "red", size = 0.8) +
   scale_x_date(breaks = seq(x_from, max_time, by = "2 weeks"),
                labels = epiweek_lab, name = "Epiweek") +
   coord_cartesian(xlim = c(x_from, max_time), ylim = c(0, y_max * 1.05)) +
