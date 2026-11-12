@@ -50,3 +50,8 @@ remotes::install_github("covid19br/nowcaster")
 - **NobBS**: uses the negative binomial model, with the history window as `moving_window`.
 - **baselinenowcast**: uses the whole history, as in `test.R`.
 - **Deployment**: INLA, CmdStan and JAGS are hard to install on shinyapps.io. Running the app locally, or on a server where you control the system libraries, is the simplest option.
+
+## Things that I have to fix
+- revise surveillance (i want to use lawless - chain ladder simple - unif, bayes.trunc methods and maybe the bayes.truncdcpp)
+- revise epinowcast (not running, maybe cmdstan problem?)
+- revise divergences between the databases of july and november (more counts for some days/weeks in july?)
